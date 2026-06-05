@@ -1,0 +1,45 @@
+<div class="banner-2col">
+  <div class="ban-side">
+    <div class="ban-tag">{{ section.settings.left_tag }}</div>
+    <h2 class="ban-h">
+      {{ section.settings.left_line1 }}<br>
+      <em>{{ section.settings.left_line2 }}</em><br>
+      {{ section.settings.left_line3 }}
+    </h2>
+    <p class="ban-p">{{ section.settings.left_desc }}</p>
+    <a href="{{ section.settings.left_link }}" class="btn btn-red">{{ section.settings.left_cta }}</a>
+  </div>
+  <div class="ban-side">
+    <div class="ban-tag">{{ section.settings.right_tag }}</div>
+    <h2 class="ban-h">
+      {{ section.settings.right_line1 }}<br>
+      <em>{{ section.settings.right_line2 }}</em><br>
+      {{ section.settings.right_line3 }}
+    </h2>
+    <p class="ban-p">{{ section.settings.right_desc }}</p>
+    <a href="{{ section.settings.right_link }}" class="btn btn-outline">{{ section.settings.right_cta }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Split Banner",
+  "settings": [
+    { "type": "text", "id": "left_tag", "label": "Left tag", "default": "Limited Edition" },
+    { "type": "text", "id": "left_line1", "label": "Left headline 1", "default": "SPEED" },
+    { "type": "text", "id": "left_line2", "label": "Left headline 2 (accent)", "default": "SERIES" },
+    { "type": "text", "id": "left_line3", "label": "Left headline 3", "default": "ELITE" },
+    { "type": "textarea", "id": "left_desc", "label": "Left description", "default": "Engineered with carbon-plate technology and responsive foam cushioning for record-breaking performance." },
+    { "type": "text", "id": "left_cta", "label": "Left CTA text", "default": "SHOP SPEED SERIES" },
+    { "type": "url", "id": "left_link", "label": "Left CTA link" },
+    { "type": "text", "id": "right_tag", "label": "Right tag", "default": "Best Seller" },
+    { "type": "text", "id": "right_line1", "label": "Right headline 1", "default": "GRAB" },
+    { "type": "text", "id": "right_line2", "label": "Right headline 2 (accent)", "default": "CLASSIC" },
+    { "type": "text", "id": "right_line3", "label": "Right headline 3", "default": "RETRO" },
+    { "type": "textarea", "id": "right_desc", "label": "Right description", "default": "Iconic silhouette, reborn with premium suede upper and memory foam insole for all-day street style." },
+    { "type": "text", "id": "right_cta", "label": "Right CTA text", "default": "EXPLORE CLASSICS" },
+    { "type": "url", "id": "right_link", "label": "Right CTA link" }
+  ],
+  "presets": [{ "name": "Split Banner" }]
+}
+{% endschema %}

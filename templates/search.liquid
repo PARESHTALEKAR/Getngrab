@@ -1,0 +1,35 @@
+<section class="section">
+  <div class="sec-head">
+    <h2 class="sec-title">Search <span>Results</span></h2>
+    {% if search.performed %}
+      <span style="font-size:13px;color:var(--mid)">
+        {{ search.results_count }} result{{ search.results_count | pluralize: '', 's' }} for "{{ search.terms }}"
+      </span>
+    {% endif %}
+  </div>
+
+  {% if search.performed %}
+    {% if search.results_count > 0 %}
+      <div class="prod-grid">
+        {% for result in search.results %}
+          {% if result.object_type == 'product' %}
+            {% render 'product-card', product: result %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div style="text-align:center;padding:60px">
+        <div style="font-size:56px;margin-bottom:16px">🔍</div>
+        <div style="font-family:var(--font-head);font-size:24px;font-weight:900;text-transform:uppercase;margin-bottom:8px">No results found</div>
+        <p style="color:var(--mid);margin-bottom:24px">Try searching for a different term or browse our collections.</p>
+        <a href="/collections/all" class="btn btn-red">VIEW ALL SHOES</a>
+      </div>
+    {% endif %}
+  {% else %}
+    <form action="/search" method="get" style="max-width:480px;display:flex;gap:8px">
+      <input type="search" name="q" placeholder="Search shoes..." value="{{ search.terms | escape }}"
+             style="flex:1;padding:12px 16px;border:1px solid var(--border);font-size:15px;">
+      <button type="submit" class="btn btn-red" style="white-space:nowrap">SEARCH</button>
+    </form>
+  {% endif %}
+</section>

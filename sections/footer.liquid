@@ -1,0 +1,57 @@
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo">GET<span>N</span>GRAB</div>
+      <p class="foot-desc">India's boldest footwear destination. Performance, style, and street culture — all in one grab.</p>
+    </div>
+    <div>
+      <div class="foot-h">Shop</div>
+      <ul class="foot-links">
+        <li><a href="/collections/new-arrivals">New Arrivals</a></li>
+        <li><a href="/collections/running">Running</a></li>
+        <li><a href="/collections/training">Training</a></li>
+        <li><a href="/collections/basketball">Basketball</a></li>
+        <li><a href="/collections/lifestyle">Lifestyle</a></li>
+        <li><a href="/collections/kids">Kids</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-h">Help</div>
+      <ul class="foot-links">
+        <li><a href="/account/orders">My Orders</a></li>
+        <li><a href="/pages/track-order">Track Order</a></li>
+        <li><a href="/pages/returns">Returns &amp; Refunds</a></li>
+        <li><a href="/pages/size-guide">Size Guide</a></li>
+        <li><a href="/pages/faqs">FAQs</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-h">Company</div>
+      <ul class="foot-links">
+        <li><a href="/pages/about">About GetNGrab</a></li>
+        <li><a href="/pages/careers">Careers</a></li>
+        <li><a href="/pages/sustainability">Sustainability</a></li>
+        {% if customer.tags contains 'admin' %}
+          <li><a href="/admin">⚙ Admin Panel</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; {{ 'now' | date: '%Y' }} GetNGrab. All rights reserved.</span>
+    <span>
+      <a href="/policies/privacy-policy" style="color:inherit">Privacy Policy</a>
+      &nbsp;|&nbsp;
+      <a href="/policies/terms-of-service" style="color:inherit">Terms</a>
+      &nbsp;|&nbsp;
+      <a href="/sitemap.xml" style="color:inherit">Sitemap</a>
+    </span>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": []
+}
+{% endschema %}

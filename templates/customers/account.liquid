@@ -1,0 +1,68 @@
+{% if customer %}
+  <div class="orders-wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
+      <h2 class="sec-title">My <span>Orders</span></h2>
+      <div style="display:flex;gap:12px;align-items:center">
+        <span style="font-size:14px;color:var(--mid)">Hello, {{ customer.first_name }}</span>
+        <a href="/account/logout" class="btn btn-outline btn-sm">Sign Out</a>
+      </div>
+    </div>
+
+    {% if customer.orders.size > 0 %}
+      {% for order in customer.orders %}
+        <div class="order-card">
+          <div class="order-card-head">
+            <span class="order-id">#{{ order.order_number }}</span>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-size:13px;color:var(--mid)">{{ order.created_at | date: '%b %d, %Y' }}</span>
+              <span class="order-status status-{{ order.financial_status }}">{{ order.financial_status | upcase }}</span>
+            </div>
+          </div>
+          <div class="order-card-body">
+            <div class="order-items-preview">
+              {% for line_item in order.line_items limit: 3 %}
+                <div class="oi-thumb">
+                  {% if line_item.image %}
+                    <img src="{{ line_item.image | img_url: '80x' }}" alt="{{ line_item.title | escape }}" style="width:100%;height:100%;object-fit:contain;">
+                  {% else %}
+                    <span style="font-size:24px">👟</span>
+                  {% endif %}
+                </div>
+              {% endfor %}
+              {% if order.line_items.size > 3 %}
+                <div class="oi-thumb" style="font-size:12px;font-weight:700;color:var(--mid)">+{{ order.line_items.size | minus: 3 }} more</div>
+              {% endif %}
+            </div>
+            <div class="order-meta">
+              <div><b>{{ order.line_items.size }} item{{ order.line_items.size | pluralize: '', 's' }}</b></div>
+              <div>Total: <b>{{ order.total_price | money }}</b></div>
+              <div>Status: <b>{{ order.fulfillment_status | default: 'Processing' | capitalize }}</b></div>
+            </div>
+            <div style="margin-top:14px">
+              <a href="{{ order.customer_url }}" class="btn btn-outline btn-sm">VIEW ORDER</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div style="text-align:center;padding:60px">
+        <div style="font-size:56px;margin-bottom:16px">📦</div>
+        <div style="font-family:var(--font-head);font-size:24px;font-weight:900;text-transform:uppercase;margin-bottom:8px">No orders yet</div>
+        <a href="/collections/all" class="btn btn-red">SHOP NOW</a>
+      </div>
+    {% endif %}
+  </div>
+
+{% else %}
+  <div style="text-align:center;padding:80px 24px;max-width:440px;margin:0 auto">
+    <div style="font-size:56px;margin-bottom:20px">👤</div>
+    <h2 style="font-family:var(--font-head);font-size:32px;font-weight:900;text-transform:uppercase;margin-bottom:12px">Sign In to View Orders</h2>
+    <p style="color:var(--mid);margin-bottom:28px">Sign in to track your orders and manage your account.</p>
+    {% form 'customer_login' %}
+      <div class="form-group"><label>Email</label><input name="customer[email]" type="email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Password</label><input name="customer[password]" type="password" placeholder="••••••••"></div>
+      <button type="submit" class="btn btn-red" style="width:100%;padding:13px;margin-bottom:12px">SIGN IN</button>
+      <a href="/account/register" style="font-size:13px;color:var(--mid)">Don't have an account? Register →</a>
+    {% endform %}
+  </div>
+{% endif %}

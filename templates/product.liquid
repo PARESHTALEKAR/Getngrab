@@ -1,0 +1,144 @@
+{% assign product = product %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<div class="product-detail">
+  <!-- LEFT: Product Image / 3D Viewer -->
+  <div class="pd-3d" style="position:relative;">
+    <img id="pdImg"
+         src="{{ product.featured_image | img_url: '1200x' }}"
+         alt="{{ product.featured_image.alt | escape | default: product.title }}"
+         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:1;transition:opacity 0.4s;">
+
+    {% comment %} Thumbnail gallery {% endcomment %}
+    {% if product.images.size > 1 %}
+      <div class="pd-controls" style="z-index:3;display:flex;gap:8px;bottom:20px;left:50%;transform:translateX(-50%);position:absolute;">
+        {% for image in product.images limit: 6 %}
+          <button onclick="document.getElementById('pdImg').src='{{ image | img_url: '1200x' }}'"
+                  style="width:44px;height:34px;border:2px solid {% if forloop.first %}var(--black){% else %}transparent{% endif %};background:none;cursor:pointer;padding:0;overflow:hidden;transition:.2s;"
+                  onmouseenter="this.style.borderColor='var(--black)'" onmouseleave="">
+            <img src="{{ image | img_url: '100x' }}" alt="{{ image.alt }}" style="width:100%;height:100%;object-fit:cover;">
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- RIGHT: Product Info -->
+  <div class="pd-info">
+    <div class="pd-breadcrumb">
+      <a href="/" style="color:inherit;text-decoration:none">Home</a> /
+      <a href="{{ product.collections.first.url }}" style="color:inherit;text-decoration:none">{{ product.type }}</a> /
+      <span>{{ product.title }}</span>
+    </div>
+
+    <div class="pd-cat">{{ product.type }}</div>
+    <h1 class="pd-name">{{ product.title }}</h1>
+
+    <div class="pd-price-row">
+      <span class="pd-price" id="pdPrice">{{ current_variant.price | money }}</span>
+      {% if current_variant.compare_at_price > current_variant.price %}
+        <span class="pd-old" id="pdOldPrice">{{ current_variant.compare_at_price | money }}</span>
+        {% assign savings = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price %}
+        <span class="pd-off">{{ savings }}% OFF</span>
+      {% endif %}
+    </div>
+
+    {% comment %} Color Option {% endcomment %}
+    {% if product.options contains 'Color' %}
+      <div style="margin-bottom:20px">
+        <div class="pd-section-title">Color: <span id="selectedColor">{{ current_variant.option1 }}</span></div>
+        <div class="prod-colors" style="gap:10px">
+          {% assign color_option = product.options_by_name['Color'] %}
+          {% for value in color_option.values %}
+            <button class="cdot {% if value == current_variant.option1 %}active{% endif %}"
+                    style="width:22px;height:22px;"
+                    title="{{ value }}"
+                    onclick="GNG.selectColor(this, '{{ value }}')">
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} Size Option {% endcomment %}
+    {% if product.options contains 'Size' %}
+      <div style="margin-bottom:24px">
+        <div class="pd-section-title" style="display:flex;justify-content:space-between">
+          <span>Size: <span id="selectedSize">Select a size</span></span>
+          <a href="/pages/size-guide" style="font-size:12px;color:var(--mid);font-weight:400">Size Guide →</a>
+        </div>
+        <div class="size-grid">
+          {% for variant in product.variants %}
+            <button class="size-btn {% unless variant.available %}oos{% endunless %}"
+                    data-variant-id="{{ variant.id }}"
+                    data-price="{{ variant.price }}"
+                    data-compare="{{ variant.compare_at_price }}"
+                    onclick="GNG.selectSize(this)"
+                    {% unless variant.available %}disabled title="Out of stock"{% endunless %}>
+              {{ variant.title | split: ' / ' | last }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <p class="pd-desc">{{ product.description }}</p>
+
+    {% comment %} Features from metafields or tags {% endcomment %}
+    {% if product.metafields.custom.features != blank %}
+      <ul class="pd-features">
+        {% assign features = product.metafields.custom.features.value %}
+        {% for feature in features %}
+          <li>{{ feature }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="pd-btn-row">
+      <button class="pd-addcart" id="pdAddCart"
+              onclick="GNG.addToCartFromPDP()"
+              data-variant-id="{{ current_variant.id }}"
+              data-product-title="{{ product.title | escape }}"
+              data-price="{{ current_variant.price }}"
+              data-image="{{ product.featured_image | img_url: '200x' }}">
+        ADD TO BAG
+      </button>
+      <button class="pd-wishlist"
+              onclick="GNG.toggleWishlistItem('{{ product.id }}', '{{ product.title | escape }}')"
+              aria-label="Add to wishlist">
+        🤍
+      </button>
+    </div>
+
+    <!-- Trust badges -->
+    <div style="display:flex;gap:20px;margin-top:28px;padding-top:24px;border-top:1px solid var(--border);flex-wrap:wrap">
+      <div style="font-size:12px;color:var(--mid);display:flex;align-items:center;gap:6px">🚚 Free shipping above ₹999</div>
+      <div style="font-size:12px;color:var(--mid);display:flex;align-items:center;gap:6px">↩️ 30-day returns</div>
+      <div style="font-size:12px;color:var(--mid);display:flex;align-items:center;gap:6px">✅ 100% authentic</div>
+      <div style="font-size:12px;color:var(--mid);display:flex;align-items:center;gap:6px">💳 Secure checkout</div>
+    </div>
+  </div>
+</div>
+
+<!-- RELATED PRODUCTS -->
+<section class="section section-gray">
+  <div class="sec-head">
+    <h2 class="sec-title">You May Also <span>Like</span></h2>
+  </div>
+  <div class="prod-grid">
+    {% assign related_collection = collections[product.collections.first.handle] %}
+    {% if related_collection %}
+      {% for p in related_collection.products limit: 4 %}
+        {% unless p.id == product.id %}
+          {% render 'product-card', product: p %}
+        {% endunless %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  // Expose current product variants to JS
+  window.GNG_ProductVariants = {{ product.variants | json }};
+  window.GNG_CurrentVariantId = {{ current_variant.id }};
+</script>

@@ -1,0 +1,29 @@
+<section class="section" id="shopSection">
+  <div class="sec-head">
+    <h2 class="sec-title">New <span>Arrivals</span></h2>
+    <a class="view-all" href="/collections/new-arrivals">View All →</a>
+  </div>
+  <div class="prod-grid">
+    {% assign new_collection = collections[section.settings.collection] %}
+    {% if new_collection != blank %}
+      {% for product in new_collection.products limit: section.settings.products_limit %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    {% else %}
+      {% for i in (1..4) %}
+        {% render 'product-card-placeholder' %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "New Arrivals",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Select the New Arrivals collection" },
+    { "type": "range", "id": "products_limit", "min": 2, "max": 12, "step": 2, "label": "Number of products", "default": 4 }
+  ],
+  "presets": [{ "name": "New Arrivals" }]
+}
+{% endschema %}

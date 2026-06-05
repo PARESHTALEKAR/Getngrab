@@ -1,0 +1,61 @@
+{% section 'category-bar' %}
+
+<section class="section">
+  <div class="sec-head">
+    <h2 class="sec-title">
+      {% if collection.handle == 'all' %}
+        All <span>Shoes</span>
+      {% else %}
+        {{ collection.title | split: ' ' | first }}
+        <span>{{ collection.title | split: ' ' | last }}</span>
+      {% endif %}
+    </h2>
+    <span style="font-size:13px;color:var(--mid)">{{ collection.products_count }} products</span>
+  </div>
+
+  {% comment %} Sort bar {% endcomment %}
+  <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:24px;gap:12px">
+    <label for="sortBy" style="font-size:13px;font-weight:600;color:var(--mid)">Sort by:</label>
+    <select id="sortBy" onchange="location.href='?sort_by='+this.value"
+            style="border:1px solid var(--border);padding:8px 12px;font-size:13px;background:#fff;cursor:pointer;outline:none">
+      <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+      <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+      <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
+      <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
+      <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+    </select>
+  </div>
+
+  <div class="prod-grid">
+    {% for product in collection.products %}
+      {% render 'product-card', product: product %}
+    {% else %}
+      <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--mid)">
+        <div style="font-size:56px;margin-bottom:16px">👟</div>
+        <div style="font-family:var(--font-head);font-size:24px;font-weight:900;text-transform:uppercase;margin-bottom:8px">No products found</div>
+        <a href="/collections/all" class="btn btn-red">View All Shoes</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% comment %} Pagination {% endcomment %}
+  {% if paginate.pages > 1 %}
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:48px">
+      {% if paginate.previous %}
+        <a href="{{ paginate.previous.url }}" class="btn btn-outline btn-sm">← Prev</a>
+      {% endif %}
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          <a href="{{ part.url }}" class="btn btn-outline btn-sm">{{ part.title }}</a>
+        {% else %}
+          <span class="btn btn-black btn-sm">{{ part.title }}</span>
+        {% endif %}
+      {% endfor %}
+      {% if paginate.next %}
+        <a href="{{ paginate.next.url }}" class="btn btn-outline btn-sm">Next →</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+
+{% paginate collection.products by 12 %}{% endpaginate %}

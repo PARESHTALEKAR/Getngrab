@@ -1,0 +1,32 @@
+<section style="background:var(--red);padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap">
+  <div>
+    <h2 style="font-family:var(--font-head);font-size:clamp(26px,4vw,42px);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-1px">
+      {{ section.settings.headline | newline_to_br }}
+    </h2>
+    <p style="color:rgba(255,255,255,.7);font-size:14px;margin-top:8px">{{ section.settings.subtext }}</p>
+  </div>
+  <div style="display:flex;gap:0;max-width:440px;flex:1;min-width:280px">
+    {% form 'customer' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" id="nlEmail"
+             placeholder="{{ section.settings.placeholder }}"
+             style="border:none;flex:1;padding:15px 20px;font-size:14px;outline:none;width:100%">
+      <button type="submit" class="btn btn-black" style="white-space:nowrap;border-radius:0">
+        {{ section.settings.button_text }}
+      </button>
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "textarea", "id": "headline", "label": "Headline", "default": "Grab the Deal\nBefore It's Gone" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Subscribe for exclusive drops, early access & 10% off your first order." },
+    { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "Enter your email address" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "SUBSCRIBE" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

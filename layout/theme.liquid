@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ page_description | escape }}">
+  <title>{{ page_title }} – {{ shop.name }}</title>
+
+  {{ content_for_header }}
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Three.js for 3D shoe viewer -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Theme CSS -->
+  {{ 'getngrab.css' | asset_url | stylesheet_tag }}
+</head>
+<body class="template-{{ template | replace: '.', '-' | handle }}">
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ANNOUNCEMENT BAR -->
+  {% if settings.show_announcement %}
+  <div class="topbar">
+    {{ settings.announcement_text | split: '|' | join: ' &nbsp;|&nbsp; ' }}
+  </div>
+  {% endif %}
+
+  <!-- NAVIGATION -->
+  {% section 'header' %}
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="searchOverlay" onclick="GNG.closeSearch(event)">
+    <div class="search-box">
+      <span style="font-size:20px;color:#aaa">🔍</span>
+      <input id="searchInput" placeholder="Search products..." oninput="GNG.doSearch(this.value)" autocomplete="off">
+      <button onclick="GNG.closeSearch()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#aaa">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay" onclick="GNG.toggleCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-head">
+      <h3>Your Bag <span id="cartHeadCount" style="color:var(--mid);font-size:16px"></span></h3>
+      <button class="cart-close" onclick="GNG.toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+      <div class="cart-subtotal"><span>Shipping</span><span id="cartShipping">FREE</span></div>
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <a href="/checkout" class="btn btn-red" style="width:100%;font-size:16px;padding:15px;display:block;text-align:center;text-decoration:none">PROCEED TO CHECKOUT →</a>
+      <button class="btn btn-outline" style="width:100%;font-size:13px;padding:11px;margin-top:8px;display:block;text-align:center" onclick="GNG.toggleCart()">CONTINUE SHOPPING</button>
+    </div>
+  </div>
+
+  <!-- PAGE CONTENT -->
+  <main id="MainContent" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  <!-- FOOTER -->
+  {% section 'footer' %}
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal" style="max-width:440px">
+      <div class="modal-head">
+        <h3>My Account</h3>
+        <button class="modal-close" onclick="GNG.closeModal('loginModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="login-tabs">
+          <div class="login-tab active" onclick="GNG.switchLoginTab('login',this)">Sign In</div>
+          <div class="login-tab" onclick="GNG.switchLoginTab('register',this)">Register</div>
+        </div>
+        <div id="loginForm">
+          {% form 'customer_login' %}
+            <div class="form-group"><label>Email</label><input name="customer[email]" type="email" placeholder="you@example.com"></div>
+            <div class="form-group"><label>Password</label><input name="customer[password]" type="password" placeholder="••••••••"></div>
+            <button type="submit" class="btn btn-red" style="width:100%;padding:13px">SIGN IN</button>
+          {% endform %}
+        </div>
+        <div id="registerForm" style="display:none">
+          {% form 'create_customer' %}
+            <div class="form-row">
+              <div class="form-group"><label>First Name</label><input name="customer[first_name]" placeholder="Raj"></div>
+              <div class="form-group"><label>Last Name</label><input name="customer[last_name]" placeholder="Kumar"></div>
+            </div>
+            <div class="form-group"><label>Email</label><input name="customer[email]" type="email" placeholder="raj@example.com"></div>
+            <div class="form-group"><label>Password</label><input name="customer[password]" type="password" placeholder="Min 8 characters"></div>
+            <button type="submit" class="btn btn-red" style="width:100%;padding:13px">CREATE ACCOUNT</button>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Theme JS -->
+  {{ 'getngrab.js' | asset_url | script_tag }}
+
+  <!-- Shopify cart JS integration -->
+  <script>
+    // Pass Shopify cart data to our JS
+    window.ShopifyData = {
+      cartUrl: "{{ routes.cart_url }}",
+      cartAddUrl: "{{ routes.cart_add_url }}",
+      cartChangeUrl: "{{ routes.cart_change_url }}",
+      checkoutUrl: "{{ routes.checkout_url }}",
+      customerId: {{ customer.id | default: 'null' }},
+      customerName: "{{ customer.first_name | default: '' | escape }}",
+      currency: "{{ cart.currency.symbol | default: '₹' }}",
+      moneyFormat: {{ shop.money_format | json }}
+    };
+  </script>
+
+  <!-- Keyboard shortcuts -->
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        GNG.closeSearch();
+        GNG.closeCart();
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        GNG.openSearch();
+      }
+    });
+  </script>
+</body>
+</html>

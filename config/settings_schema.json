@@ -1,0 +1,36 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "GetNGrab",
+    "theme_version": "1.0.0",
+    "theme_author": "GetNGrab",
+    "theme_documentation_url": "https://getngrab.com",
+    "theme_support_url": "https://getngrab.com/support"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_primary", "label": "Brand Red", "default": "#e8001d" },
+      { "type": "color", "id": "color_black", "label": "Brand Black", "default": "#0a0a0a" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      { "type": "font_picker", "id": "heading_font", "label": "Heading Font", "default": "barlow_condensed_n9" },
+      { "type": "font_picker", "id": "body_font", "label": "Body Font", "default": "barlow_n4" }
+    ]
+  },
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      { "type": "checkbox", "id": "show_announcement", "label": "Show announcement bar", "default": true },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Announcement text",
+        "default": "FREE SHIPPING ABOVE \u20b9999 | USE GRAB10 FOR 10% OFF | 30-DAY FREE RETURNS"
+      }
+    ]
+  }
+]

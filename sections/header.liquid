@@ -1,0 +1,34 @@
+<nav id="mainNav">
+  <a class="logo" href="/">GET<span>N</span>GRAB</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/collections/all">All</a></li>
+    <li><a href="/collections/running">Running</a></li>
+    <li><a href="/collections/training">Training</a></li>
+    <li><a href="/collections/basketball">Basketball</a></li>
+    <li><a href="/collections/lifestyle">Lifestyle</a></li>
+    <li><a href="/collections/kids">Kids</a></li>
+    <li><a href="/account/orders">My Orders</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="GNG.openSearch()" title="Search" aria-label="Search">🔍</button>
+    <button class="icon-btn" onclick="GNG.toggleWishlist()" title="Wishlist" aria-label="Wishlist">🤍<span class="cart-count" id="wishlistCount" style="display:none">0</span></button>
+    <button class="icon-btn" onclick="GNG.toggleCart()" title="Cart" aria-label="Cart" style="position:relative">
+      🛒<span class="cart-count" id="cartCount">{{ cart.item_count }}</span>
+    </button>
+    <a class="nav-cart" href="/checkout">CHECKOUT</a>
+    {% if customer %}
+      <a class="icon-btn" href="/account" title="Account" aria-label="Account">👤</a>
+    {% else %}
+      <button class="icon-btn" onclick="GNG.openModal('loginModal')" title="Account" aria-label="Account">👤</button>
+    {% endif %}
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "checkbox", "id": "sticky_header", "label": "Sticky header", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+<div class="section">
+  <div class="sec-head">
+    <h2 class="sec-title">Your <span>Bag</span></h2>
+    <a class="view-all" href="/collections/all">← Continue Shopping</a>
+  </div>
+
+  {% if cart.item_count > 0 %}
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start">
+      <!-- Cart Items -->
+      <div>
+        {% for item in cart.items %}
+          <div class="cart-item" style="display:flex;gap:20px;padding:24px 0;border-bottom:1px solid #f0f0f0;align-items:flex-start">
+            <a href="{{ item.url }}" style="flex-shrink:0">
+              <img src="{{ item.image | img_url: '160x' }}" alt="{{ item.title | escape }}"
+                   style="width:100px;height:75px;object-fit:contain;background:#f4f4f4;display:block;">
+            </a>
+            <div style="flex:1">
+              <a href="{{ item.url }}" style="text-decoration:none;color:inherit">
+                <div class="cart-item-name">{{ item.product.title }}</div>
+              </a>
+              <div class="cart-item-meta">{{ item.variant.title | unless item.variant.title == 'Default Title' }}</div>
+              <div style="display:flex;align-items:center;gap:16px;margin-top:12px">
+                <div class="cart-qty">
+                  <a href="/cart/change?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                     class="qty-btn">−</a>
+                  <span class="qty-num">{{ item.quantity }}</span>
+                  <a href="/cart/change?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                     class="qty-btn">+</a>
+                </div>
+                <a href="/cart/change?line={{ forloop.index }}&quantity=0"
+                   style="font-size:12px;color:var(--mid);text-decoration:none;border-bottom:1px solid currentColor">Remove</a>
+              </div>
+            </div>
+            <div class="cart-item-price">{{ item.final_line_price | money }}</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Order Summary -->
+      <div style="background:#fff;border:1px solid var(--border);padding:28px;position:sticky;top:90px">
+        <h3 style="font-family:var(--font-head);font-size:20px;font-weight:900;text-transform:uppercase;margin-bottom:20px">Order Summary</h3>
+
+        <!-- Coupon -->
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <input id="discountCode" placeholder="Coupon code (try GRAB10)"
+                 style="border:1px solid var(--border);padding:10px 14px;font-size:13px;flex:1;outline:none;">
+          <button onclick="GNG.applyDiscount()" class="btn btn-black btn-sm">APPLY</button>
+        </div>
+        <div id="couponMsg" style="font-size:12px;color:var(--success);margin-bottom:12px;display:none"></div>
+
+        <div class="summary-row"><span>Subtotal ({{ cart.item_count }} items)</span><span>{{ cart.total_price | money }}</span></div>
+        <div class="summary-row"><span>Shipping</span><span style="color:var(--success)">
+          {% if cart.total_price >= 99900 %}FREE{% else %}Calculated at checkout{% endif %}
+        </span></div>
+        <div class="summary-total"><span>Total</span><span>{{ cart.total_price | money }}</span></div>
+
+        <a href="/checkout" class="btn btn-red" style="width:100%;font-size:16px;padding:15px;display:block;text-align:center;margin-top:4px;text-decoration:none">
+          PROCEED TO CHECKOUT →
+        </a>
+        <div style="text-align:center;font-size:12px;color:var(--mid);margin-top:12px">🔒 Secure checkout with SSL encryption</div>
+      </div>
+    </div>
+
+  {% else %}
+    <div style="text-align:center;padding:80px 24px">
+      <div style="font-size:64px;margin-bottom:20px">🛒</div>
+      <div style="font-family:var(--font-head);font-size:28px;font-weight:900;text-transform:uppercase;margin-bottom:12px">Your bag is empty</div>
+      <p style="color:var(--mid);margin-bottom:28px">Looks like you haven't added any shoes yet.</p>
+      <a href="/collections/all" class="btn btn-red">SHOP NOW</a>
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,67 @@
+{% assign show_badge = false %}
+{% if product.tags contains 'badge-new' %}{% assign badge_type = 'new' %}{% assign badge_label = 'NEW' %}{% assign show_badge = true %}{% endif %}
+{% if product.tags contains 'badge-sale' %}{% assign badge_type = 'sale' %}{% assign badge_label = 'SALE' %}{% assign show_badge = true %}{% endif %}
+{% if product.tags contains 'badge-hot' %}{% assign badge_type = 'hot' %}{% assign badge_label = 'HOT' %}{% assign show_badge = true %}{% endif %}
+
+{% assign compare_price = product.compare_at_price %}
+{% assign current_price = product.price %}
+{% assign savings_pct = 0 %}
+{% if compare_price > current_price %}
+  {% assign diff = compare_price | minus: current_price %}
+  {% assign savings_pct = diff | times: 100 | divided_by: compare_price %}
+{% endif %}
+
+<div class="prod-card" data-product-id="{{ product.id }}">
+  {% if show_badge %}
+    <div class="prod-badge badge-{{ badge_type }}">{{ badge_label }}</div>
+  {% endif %}
+
+  <a href="{{ product.url }}" class="shoe-3d-wrap" style="display:block;text-decoration:none">
+    {% if product.featured_image != blank %}
+      <img src="{{ product.featured_image | img_url: '600x' }}"
+           alt="{{ product.featured_image.alt | escape | default: product.title }}"
+           loading="lazy"
+           style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+    {% else %}
+      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;background:#f8f8f8;">👟</div>
+    {% endif %}
+  </a>
+
+  <div class="prod-info">
+    <div class="prod-cat-label">{{ product.type }}</div>
+    <a href="{{ product.url }}" style="text-decoration:none;color:inherit">
+      <div class="prod-name">{{ product.title }}</div>
+    </a>
+
+    {% comment %} Color swatches from metafield or options {% endcomment %}
+    {% if product.options contains 'Color' %}
+      <div class="prod-colors">
+        {% assign color_option = product.options_by_name['Color'] %}
+        {% for value in color_option.values limit: 5 %}
+          <div class="cdot" style="background:{{ value | handleize }};" title="{{ value }}"></div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="prod-price-row">
+      <span class="price-now">{{ current_price | money }}</span>
+      {% if compare_price > current_price %}
+        <span class="price-old">{{ compare_price | money }}</span>
+        <span class="price-off">{{ savings_pct }}% OFF</span>
+      {% endif %}
+    </div>
+
+    <div class="prod-actions">
+      <button class="btn-addcart"
+              onclick="GNG.addToCart('{{ product.variants.first.id }}', '{{ product.title | escape }}', {{ current_price }}, '{{ product.featured_image | img_url: '200x' }}')"
+              data-variant-id="{{ product.variants.first.id }}">
+        ADD TO BAG
+      </button>
+      <button class="btn-wish"
+              onclick="GNG.toggleWishlistItem('{{ product.id }}', '{{ product.title | escape }}')"
+              aria-label="Add to wishlist">
+        🤍
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<section class="section" style="background:#fff">
+  <div style="text-align:center;margin-bottom:40px">
+    <h2 class="sec-title">Why <span>GetNGrab?</span></h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+    {% for block in section.blocks %}
+      <div class="feature-tile" style="text-align:center;padding:28px 16px;border:1px solid var(--border);transition:.2s"
+           onmouseenter="this.style.borderColor='var(--red)'" onmouseleave="this.style.borderColor='var(--border)'"
+           {{ block.shopify_attributes }}>
+        <div style="font-size:32px;margin-bottom:14px">{{ block.settings.icon }}</div>
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:800;text-transform:uppercase;margin-bottom:8px">{{ block.settings.title }}</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.6">{{ block.settings.description }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Why GetNGrab",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Emoji icon", "default": "🚚" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free Shipping" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Free delivery on all orders above \u20b9999 across India." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why GetNGrab",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "🚚", "title": "Free Shipping", "description": "Free delivery on all orders above \u20b9999 across India." } },
+        { "type": "feature", "settings": { "icon": "\u21a9\ufe0f", "title": "Easy Returns", "description": "30-day hassle-free returns. Doorstep pickup included." } },
+        { "type": "feature", "settings": { "icon": "\u2705", "title": "100% Authentic", "description": "Every pair verified genuine. Zero counterfeits guaranteed." } },
+        { "type": "feature", "settings": { "icon": "\ud83d\udcb3", "title": "Secure Payment", "description": "UPI, cards, EMI & more. 256-bit SSL on all transactions." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
