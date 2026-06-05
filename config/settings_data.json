@@ -1,8 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_primary": "#e8001d",
     "color_black": "#0a0a0a",
     "show_announcement": true,
-    "announcement_text": "FREE SHIPPING ABOVE \u20b9999 | USE GRAB10 FOR 10% OFF | 30-DAY FREE RETURNS"
+    "announcement_text": "FREE SHIPPING ABOVE ₹999 | USE GRAB10 FOR 10% OFF | 30-DAY FREE RETURNS",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "sticky_header": true
+        }
+      },
+      "hero": {
+        "type": "hero",
+        "settings": {
+          "hero_tag": "New Drop 2025",
+          "hero_line1": "RUN",
+          "hero_line2": "YOUR",
+          "hero_line3": "WORLD",
+          "hero_subtitle": "Performance footwear engineered for champions. Every step, every stride — grab the edge before it's gone.",
+          "cta1_text": "SHOP NOW",
+          "cta1_link": "",
+          "cta2_text": "RUNNING COLLECTION",
+          "cta2_link": "",
+          "hero_badge": "748 SOLD →",
+          "stat1_num": "500+",
+          "stat1_lbl": "Styles",
+          "stat2_num": "2M+",
+          "stat2_lbl": "Happy Feet",
+          "stat3_num": "48hr",
+          "stat3_lbl": "Delivery"
+        }
+      },
+      "promo-strip": {
+        "type": "promo-strip",
+        "settings": {
+          "promo_text": "CULTURE CIRCLE PICKS — AUTHENTICATED SNEAKERS FROM ₹5,979 | FREE SHIPPING ON ORDERS ABOVE ₹999"
+        }
+      },
+      "category-bar": {
+        "type": "category-bar",
+        "settings": {}
+      },
+      "new-arrivals": {
+        "type": "new-arrivals",
+        "settings": {
+          "collection": "frontpage",
+          "products_limit": 4
+        }
+      },
+      "split-banner": {
+        "type": "split-banner",
+        "settings": {
+          "left_tag": "Limited Edition",
+          "left_line1": "SPEED",
+          "left_line2": "SERIES",
+          "left_line3": "ELITE",
+          "left_desc": "Engineered with carbon-plate technology and responsive foam cushioning for record-breaking performance.",
+          "left_cta": "SHOP SPEED SERIES",
+          "left_link": "",
+          "right_tag": "Best Seller",
+          "right_line1": "GRAB",
+          "right_line2": "CLASSIC",
+          "right_line3": "RETRO",
+          "right_desc": "Iconic silhouette, reborn with premium suede upper and memory foam insole for all-day street style.",
+          "right_cta": "EXPLORE CLASSICS",
+          "right_link": ""
+        }
+      },
+      "best-sellers": {
+        "type": "best-sellers",
+        "settings": {
+          "collection": "",
+          "products_limit": 4
+        }
+      },
+      "why-getngrab": {
+        "type": "why-getngrab",
+        "settings": {}
+      },
+      "newsletter": {
+        "type": "newsletter",
+        "settings": {
+          "headline": "Grab the Deal\nBefore It's Gone",
+          "subtext": "Subscribe for exclusive drops, early access & 10% off your first order.",
+          "placeholder": "Enter your email address",
+          "button_text": "SUBSCRIBE"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
   }
 }
