@@ -80,12 +80,52 @@
       "best-sellers": {
         "type": "best-sellers",
         "settings": {
-          "collection": "",
+          "collection": "frontpage",
           "products_limit": 4
         }
       },
       "why-getngrab": {
         "type": "why-getngrab",
+        "blocks": {
+          "feature_nNYNE4": {
+            "type": "feature",
+            "settings": {
+              "icon": "💰",
+              "title": "Great Value for Money",
+              "description": "Great Value for Money with competitive prices and regular offers."
+            }
+          },
+          "feature_Gd8Lz3": {
+            "type": "feature",
+            "settings": {
+              "icon": "🚚",
+              "title": "Free Shipping",
+              "description": "Free delivery on all orders above ₹999 across India."
+            }
+          },
+          "feature_GziUQd": {
+            "type": "feature",
+            "settings": {
+              "icon": "✅",
+              "title": "Authentic Products",
+              "description": "Genuine products sourced from trusted brands and suppliers."
+            }
+          },
+          "feature_XEddWe": {
+            "type": "feature",
+            "settings": {
+              "icon": "🔒",
+              "title": "Secure payments",
+              "description": "Shop confidently with safe and trusted payment methods."
+            }
+          }
+        },
+        "block_order": [
+          "feature_nNYNE4",
+          "feature_Gd8Lz3",
+          "feature_GziUQd",
+          "feature_XEddWe"
+        ],
         "settings": {}
       },
       "newsletter": {
