@@ -67,14 +67,14 @@
           "left_line3": "ELITE",
           "left_desc": "Engineered with carbon-plate technology and responsive foam cushioning for record-breaking performance.",
           "left_cta": "SHOP SPEED SERIES",
-          "left_link": "",
+          "left_link": "shopify://collections/all",
           "right_tag": "Best Seller",
           "right_line1": "GRAB",
           "right_line2": "CLASSIC",
           "right_line3": "RETRO",
           "right_desc": "Iconic silhouette, reborn with premium suede upper and memory foam insole for all-day street style.",
           "right_cta": "EXPLORE CLASSICS",
-          "right_link": ""
+          "right_link": "shopify://collections/all"
         }
       },
       "best-sellers": {
